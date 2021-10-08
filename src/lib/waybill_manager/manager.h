@@ -9,8 +9,12 @@ typedef enum {
     WAYBILL_SPLIT_ERROR
 } waybill_errors;
 
-waybill_errors split_weigth(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill);
+int count_reading();
 
-waybill_errors split_price(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill);
+product_struct *struct_reading(int count_of_position);
+
+waybill_errors manage_weigth(product_struct **waybill, int waybill_len);
+
+waybill_errors manage_price(product_struct *waybill, int waybill_len);
 
 #endif //HW_1_MANAGER_H
