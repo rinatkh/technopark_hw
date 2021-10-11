@@ -6,14 +6,15 @@
 typedef enum {
     SUCCESS,
     INPUT_ERROR,
-    WAYBILL_SPLIT_ERROR
+    WAYBILL_SPLIT_ERROR,
+    MEMORY_ERROR
 } waybill_errors;
 
 int count_reading();
 
-product_struct *struct_reading(int count_of_position);
+void structs_reading(product_struct *waybill_list, int count_of_position);
 
-waybill_errors manage_weigth(product_struct **waybill, int waybill_len);
+waybill_errors manage_weigth(product_struct *waybill, int waybill_len);
 
 waybill_errors manage_price(product_struct *waybill, int waybill_len);
 

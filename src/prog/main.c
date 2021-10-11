@@ -1,5 +1,4 @@
 #include <getopt.h>
-#include <stdio.h>
 #include <malloc.h>
 
 #include "manager.h"
@@ -8,27 +7,33 @@
 int main(int argc, char **argv) {
 
     int count = count_reading();
-    product_struct **waylbil_list = (product_struct **) malloc(count * sizeof(waylbil_list));
-    for (int i = 0; i < count; i++) {
-        waylbil_list[i] = struct_reading(count);
+    product_struct *waylbill_list = (product_struct *) malloc(count * sizeof(product_struct));
+
+    if (!waylbill_list) {
+        return MEMORY_ERROR;
+
     }
+
+    structs_reading(waylbill_list, count);
 
     int i;
     while ((i = getopt(argc, argv, "pw")) != -1) {
         switch (i) {
             case 'p':
-//                manage_price(waybill, count);
+                manage_price(waylbill_list, count);
+                free(waylbill_list);
                 break;
 
             case 'w':
-                manage_weigth(waylbil_list, count);
+                manage_weigth(waylbill_list, count);
+                free(waylbill_list);
                 break;
 
             default:
                 break;
         }
     }
-    return 0;
+    return SUCCESS;
 }
 
 
