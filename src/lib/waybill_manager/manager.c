@@ -20,25 +20,25 @@ static product_struct struct_reading(int number_of_position) {
 
     printf("\t%d product:\n", number_of_position + 1);
 
-    printf("%i product vendor code: \n", number_of_position + 1);
+    printf("Product vendor code: \n");
     while ((scanf("%d", &product.vendor_code) != 1) || (product.vendor_code <= 0)) {
         printf(" !Enter a POSITIVE INTEGER product vendor code: \n");
         while (getchar() != '\n');
     };
 
-    printf("%i amount of this product: \n", number_of_position + 1);
+    printf("An amount of this product: \n");
     while ((scanf(" %d", &product.amount) != 1) || (product.amount < 0)) {
         printf(" !Enter a POSITIVE INTEGER number of products: \n");
         while (getchar() != '\n');
     };
 
-    printf("%i price of this product: \n", number_of_position + 1);
+    printf("Price of this product: \n");
     while (scanf("%f", &product.price) != 1) {
         printf(" !Enter a correct product price: \n");
         while (getchar() != '\n');
     };
 
-    printf("%i weight of this product: \n", number_of_position + 1);
+    printf("Weight of this product: \n");
     while (scanf("%f", &product.weight) != 1) {
         printf(" !Enter a correct product weight: \n");
         while (getchar() != '\n');
@@ -55,12 +55,18 @@ void structs_reading(product_struct *waybill_list, int count_of_position) {
     }
 }
 
-static void new_waybill_output(int count, product_struct *waybill) {
+static waybill_errors new_waybill_output(int count, product_struct *waybill) {
+    if (!waybill) {
+        return WAYBILL_SPLIT_ERROR;
+    }
     printf("\n\t New waybill:\n");
     for (int i = 0; i < count; i++) {
-        printf("%d: Vendor code: %d\n\tPrice: %f\n\tWeight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount_price, waybill[i].amount_weight);
+        printf("\n%d: Vendor code: %d\tAmount: %i\tPrice: %f\tWeight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount, waybill[i].amount_price,
+               waybill[i].amount_weight);
     }
     printf("\n");
+
+    return SUCCESS;
 }
 
 static waybill_errors
@@ -95,6 +101,7 @@ split_by_number_not_equal_weigth(product_struct *waybill, product_struct *first_
 
             first_for_second.amount = waybill[split_number].amount - current_amount + 1;
             first_for_second.amount_weight = first_for_second.amount * first_for_second.weight;
+            break;
 
         } else if (current_sum == middle) {
             last_for_first.amount = current_amount;
@@ -102,6 +109,7 @@ split_by_number_not_equal_weigth(product_struct *waybill, product_struct *first_
 
             first_for_second.amount = waybill[split_number].amount - current_amount;
             first_for_second.amount_weight = first_for_second.amount * first_for_second.weight;
+            break;
 
         }
         current_amount++;
@@ -137,6 +145,7 @@ split_by_number_not_equal_price(product_struct *waybill, product_struct *first_w
 
             first_for_second.amount = waybill[split_number].amount - current_amount + 1;
             first_for_second.amount_price = first_for_second.amount * first_for_second.price;
+            break;
 
         } else if (current_sum == middle) {
             last_for_first.amount = current_amount;
@@ -144,7 +153,7 @@ split_by_number_not_equal_price(product_struct *waybill, product_struct *first_w
 
             first_for_second.amount = waybill[split_number].amount - current_amount;
             first_for_second.amount_price = first_for_second.amount * first_for_second.price;
-
+            break;
         }
         current_amount++;
     }
