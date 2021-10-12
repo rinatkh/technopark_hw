@@ -1,0 +1,51 @@
+language: c
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - valgrind
+      - lcov
+
+before_script:
+  - mkdir cmake-build-debug
+  - cd cmake-build-debug
+  - cmake ../
+  - make
+
+jobs:
+  include:
+    - stage: tests
+      name: "Check tests"
+      script:
+        - cd src/test
+        - ./test
+
+    - stage: coverage
+      name: "Test coverage"
+      script:
+        - cd src/test
+        - ./test
+        - cd CMakeFiles/test.dir
+        - gcov test.cpp.gcno
+        - lcov --capture --directory ../../ --output-file tests.info
+        - genhtml -o ../../../../coverage-report tests.info
+        - cd ../../../../
+
+    - stage: memcheck
+      name: "Memory check"
+      script:
+        - cd src/test
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./test
+
+    - stage: static_analysis
+      name: "Static analysis"
+      script:
+        - cd ..
+        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive src/lib/waybill_manager/* src/prog/main.c src/test/test.cpp
+
+    - stage: linters
+      name: "Linters"
+      script:
+        - python2.7 ../cpplint/cpplint.py --extensions=c src/lib/waybill_manager/* src/prog/main.c src/test/test.cpp
+        - python2.7 ../cpplint/cpplint.py --extensions=c++ src/test/test.cpp
