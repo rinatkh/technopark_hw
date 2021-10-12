@@ -54,8 +54,7 @@ void structs_reading(product_struct *waybill_list, int count_of_position) {
         for (int i = 0; i < count_of_position; i++) {
             waybill_list[i] = struct_reading(i);
         }
-    }
-    else {
+    } else {
         printf("INPUT FOR READING ERROR");
     }
 
@@ -67,7 +66,8 @@ static void new_waybill_output(int count, const product_struct *waybill) {
     float sum_price = 0;
     float sum_weigth = 0;
     for (int i = 0; i < count; i++) {
-        printf("\n%d: Vendor code: %d\tAmount: %i\tTotal price: %f\tTotal weight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount, waybill[i].amount_price,
+        printf("\n%d: Vendor code: %d\tAmount: %i\tTotal price: %f\tTotal weight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount,
+               waybill[i].amount_price,
                waybill[i].amount_weight);
         sum_price += waybill[i].amount_price;
         sum_weigth += waybill[i].amount_weight;
