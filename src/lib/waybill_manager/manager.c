@@ -43,52 +43,53 @@ static product_struct struct_reading(int number_of_position) {
         printf(" !Enter a correct product weight: \n");
         while (getchar() != '\n');
     };
-    product.amount_price = (float) product.amount * product.price;
-    product.amount_weight = (float) product.amount * product.weight;
+    product.amount_price = (float) (product.amount * product.price);
+    product.amount_weight = (float) (product.amount * product.weight);
 
     return product;
 }
 
 void structs_reading(product_struct *waybill_list, int count_of_position) {
-    for (int i = 0; i < count_of_position; i++) {
-        waybill_list[i] = struct_reading(i);
+    if (waybill_list) {
+        for (int i = 0; i < count_of_position; i++) {
+            waybill_list[i] = struct_reading(i);
+        }
     }
+    else {
+        printf("INPUT FOR READING ERROR");
+    }
+
 }
 
-static waybill_errors new_waybill_output(int count, product_struct *waybill) {
-    if (!waybill) {
-        return WAYBILL_SPLIT_ERROR;
-    }
+static void new_waybill_output(int count, const product_struct *waybill) {
+
     printf("\n\t New waybill:\n");
+    float sum_price = 0;
+    float sum_weigth = 0;
     for (int i = 0; i < count; i++) {
-        printf("\n%d: Vendor code: %d\tAmount: %i\tPrice: %f\tWeight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount, waybill[i].amount_price,
+        printf("\n%d: Vendor code: %d\tAmount: %i\tTotal price: %f\tTotal weight: %f", i + 1, waybill[i].vendor_code, waybill[i].amount, waybill[i].amount_price,
                waybill[i].amount_weight);
+        sum_price += waybill[i].amount_price;
+        sum_weigth += waybill[i].amount_weight;
     }
+    printf("\nWaybill price: %f\tWaybill weight: %f", sum_price, sum_weigth);
     printf("\n");
-
-    return SUCCESS;
 }
 
-static waybill_errors
-split_by_number_equal(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number, int waybill_len) {
-    if ((!waybill) || (!first_waybill) || (!second_waybill)) {
-        return MEMORY_ERROR;
-    }
+static void
+split_by_number_equal(const product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number,
+                      int waybill_len) {
     for (int i = 0; i != split_number + 1; i++) {
         first_waybill[i] = waybill[i];
     }
     for (int i = split_number + 1; i != waybill_len; i++) {
         second_waybill[i - split_number - 1] = waybill[i];
     }
-    return SUCCESS;
 }
 
-static waybill_errors
-split_by_number_not_equal_weigth(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number,
+static void
+split_by_number_not_equal_weigth(const product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number,
                                  int waybill_len, float current_sum, float middle) {
-    if ((!waybill) || (!first_waybill) || (!second_waybill)) {
-        return MEMORY_ERROR;
-    }
     product_struct last_for_first = waybill[split_number];
     product_struct first_for_second = waybill[split_number];
 
@@ -97,18 +98,18 @@ split_by_number_not_equal_weigth(product_struct *waybill, product_struct *first_
         current_sum += waybill[split_number].weight;
         if (current_sum > middle) {
             last_for_first.amount = current_amount - 1;
-            last_for_first.amount_weight = last_for_first.amount * last_for_first.weight;
+            last_for_first.amount_weight = (float) (last_for_first.amount * last_for_first.weight);
 
             first_for_second.amount = waybill[split_number].amount - current_amount + 1;
-            first_for_second.amount_weight = first_for_second.amount * first_for_second.weight;
+            first_for_second.amount_weight = (float) (first_for_second.amount * first_for_second.weight);
             break;
 
         } else if (current_sum == middle) {
             last_for_first.amount = current_amount;
-            last_for_first.amount_weight = last_for_first.amount * last_for_first.weight;
+            last_for_first.amount_weight = (float) (last_for_first.amount * last_for_first.weight);
 
             first_for_second.amount = waybill[split_number].amount - current_amount;
-            first_for_second.amount_weight = first_for_second.amount * first_for_second.weight;
+            first_for_second.amount_weight = (float) (first_for_second.amount * first_for_second.weight);
             break;
 
         }
@@ -124,15 +125,11 @@ split_by_number_not_equal_weigth(product_struct *waybill, product_struct *first_
     for (int i = split_number + 1; i != waybill_len; i++) {
         second_waybill[i - split_number] = waybill[i];
     }
-    return SUCCESS;
 }
 
-static waybill_errors
-split_by_number_not_equal_price(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number,
+static void
+split_by_number_not_equal_price(const product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int split_number,
                                 int waybill_len, float current_sum, float middle) {
-    if ((!waybill) || (!first_waybill) || (!second_waybill)) {
-        return MEMORY_ERROR;
-    }
     product_struct last_for_first = waybill[split_number];
     product_struct first_for_second = waybill[split_number];
 
@@ -141,18 +138,18 @@ split_by_number_not_equal_price(product_struct *waybill, product_struct *first_w
         current_sum += waybill[split_number].weight;
         if (current_sum > middle) {
             last_for_first.amount = current_amount - 1;
-            last_for_first.amount_price = last_for_first.amount * last_for_first.price;
+            last_for_first.amount_price = (float) (last_for_first.amount * last_for_first.price);
 
             first_for_second.amount = waybill[split_number].amount - current_amount + 1;
-            first_for_second.amount_price = first_for_second.amount * first_for_second.price;
+            first_for_second.amount_price = (float) (first_for_second.amount * first_for_second.price);
             break;
 
         } else if (current_sum == middle) {
             last_for_first.amount = current_amount;
-            last_for_first.amount_price = last_for_first.amount * last_for_first.price;
+            last_for_first.amount_price = (float) (last_for_first.amount * last_for_first.price);
 
             first_for_second.amount = waybill[split_number].amount - current_amount;
-            first_for_second.amount_price = first_for_second.amount * first_for_second.price;
+            first_for_second.amount_price = (float) (first_for_second.amount * first_for_second.price);
             break;
         }
         current_amount++;
@@ -167,7 +164,6 @@ split_by_number_not_equal_price(product_struct *waybill, product_struct *first_w
     for (int i = split_number + 1; i != waybill_len; i++) {
         second_waybill[i - split_number] = waybill[i];
     }
-    return SUCCESS;
 }
 
 waybill_errors manage_weigth(product_struct *waybill, int waybill_len) {
@@ -191,7 +187,13 @@ waybill_errors manage_weigth(product_struct *waybill, int waybill_len) {
         current_sum += waybill[i].amount_weight;
         if (current_sum > middle) {
             first_waybill = (product_struct *) (malloc((i + 1) * sizeof(product_struct)));
+            if (!first_waybill) {
+                return MEMORY_ERROR;
+            }
             second_waybill = (product_struct *) (malloc((waybill_len - i) * sizeof(product_struct)));
+            if (!second_waybill) {
+                return MEMORY_ERROR;
+            }
             split_by_number_not_equal_weigth(waybill, first_waybill, second_waybill, i, waybill_len, prev_curren_sum, middle);
             new_waybill_output(i + 1, first_waybill);
             new_waybill_output(waybill_len - i, second_waybill);
@@ -200,7 +202,13 @@ waybill_errors manage_weigth(product_struct *waybill, int waybill_len) {
             break;
         } else if (current_sum == middle) {
             first_waybill = (product_struct *) (malloc((i + 1) * sizeof(product_struct)));
+            if (!first_waybill) {
+                return MEMORY_ERROR;
+            }
             second_waybill = (product_struct *) (malloc((waybill_len - i - 1) * sizeof(product_struct)));
+            if (!second_waybill) {
+                return MEMORY_ERROR;
+            }
             split_by_number_equal(waybill, first_waybill, second_waybill, i, waybill_len);
             new_waybill_output(i + 1, first_waybill);
             new_waybill_output(waybill_len - i - 1, second_waybill);
@@ -234,7 +242,13 @@ waybill_errors manage_price(product_struct *waybill, int waybill_len) {
         current_sum += waybill[i].amount_price;
         if (current_sum > middle) {
             first_waybill = (product_struct *) (malloc((i + 1) * sizeof(product_struct)));
+            if (!first_waybill) {
+                return MEMORY_ERROR;
+            }
             second_waybill = (product_struct *) (malloc((waybill_len - i) * sizeof(product_struct)));
+            if (!second_waybill) {
+                return MEMORY_ERROR;
+            }
             split_by_number_not_equal_price(waybill, first_waybill, second_waybill, i, waybill_len, prev_curren_sum, middle);
             new_waybill_output(i + 1, first_waybill);
             new_waybill_output(waybill_len - i, second_waybill);
@@ -243,7 +257,15 @@ waybill_errors manage_price(product_struct *waybill, int waybill_len) {
             break;
         } else if (current_sum == middle) {
             first_waybill = (product_struct *) (malloc((i + 1) * sizeof(product_struct)));
+            if (!first_waybill) {
+                free(first_waybill);
+                return MEMORY_ERROR;
+            }
             second_waybill = (product_struct *) (malloc((waybill_len - i - 1) * sizeof(product_struct)));
+            if (!second_waybill) {
+                free(first_waybill);
+                return MEMORY_ERROR;
+            }
             split_by_number_equal(waybill, first_waybill, second_waybill, i, waybill_len);
             new_waybill_output(i + 1, first_waybill);
             new_waybill_output(waybill_len - i - 1, second_waybill);

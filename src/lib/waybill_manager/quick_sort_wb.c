@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "quick_sort_wb.h"
 #include "product_struct.h"
 

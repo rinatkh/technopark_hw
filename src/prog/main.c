@@ -10,8 +10,7 @@ int main(int argc, char **argv) {
     product_struct *waylbill_list = (product_struct *) malloc(count * sizeof(product_struct));
 
     if (!waylbill_list) {
-        return MEMORY_ERROR;
-
+        return -1;
     }
 
     structs_reading(waylbill_list, count);
@@ -33,7 +32,7 @@ int main(int argc, char **argv) {
                 break;
         }
     }
-    return SUCCESS;
+    return 0;
 }
 
 

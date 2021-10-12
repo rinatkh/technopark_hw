@@ -6,7 +6,6 @@
 typedef enum {
     SUCCESS,
     INPUT_ERROR,
-    WAYBILL_SPLIT_ERROR,
     MEMORY_ERROR
 } waybill_errors;
 
