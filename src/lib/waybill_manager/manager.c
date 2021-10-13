@@ -286,6 +286,7 @@ waybill_errors manage_price(product_struct *waybill, int waybill_len) {
             free(first_waybill);
             free(second_waybill);
             break;
+
         } else if (current_sum == middle) {
             first_waybill = (product_struct *) (malloc(
                     (i + 1) * sizeof(product_struct)));
