@@ -42,10 +42,10 @@ jobs:
       name: "Static analysis"
       script:
         - cd ..
-        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive src/lib/waybill_manager/* src/prog/main.c src/test/test.cpp
+        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive /*
 
     - stage: linters
       name: "Linters"
       script:
-        - python2.7 ../cpplint/cpplint.py --extensions=c src/lib/waybill_manager/* src/prog/main.c src/test/test.cpp
-        - python2.7 ../cpplint/cpplint.py --extensions=c++ src/test/test.cpp
+        - python2.7 ../cpplint/cpplint.py --extensions=c /*
+        - python2.7 ../cpplint/cpplint.py --extensions=c++ /*

@@ -38,8 +38,8 @@ static product_struct struct_reading(int number_of_position) {
         printf(" !Enter a correct product weight: \n");
         while (getchar() != '\n');
     };
-    product.amount_price = (float) (product.amount * product.price);
-    product.amount_weight = (float) (product.amount * product.weight);
+    product.amount_price = (float) (product.amount) * product.price;
+    product.amount_weight = (float) (product.amount) * product.weight;
 
     return product;
 }
@@ -160,10 +160,12 @@ split_by_number_not_equal_price(const product_struct *waybill, product_struct *f
     }
 }
 
-waybill_errors manage_weigth(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int waybill_len) {
-    if ((!waybill) || (!first_waybill) || (!second_waybill)) {
-            return INPUT_ERROR;
+waybill_errors manage_weigth(product_struct *waybill, int waybill_len) {
+    if (!waybill) {
+        return INPUT_ERROR;
     }
+    product_struct *first_waybill = NULL;
+    product_struct *second_waybill = NULL;
 
     quick_sort_weight(waybill, 0, waybill_len - 1);
     float sum = 0;
@@ -210,10 +212,14 @@ waybill_errors manage_weigth(product_struct *waybill, product_struct *first_wayb
     return SUCCESS;
 }
 
-waybill_errors manage_price(product_struct *waybill, product_struct *first_waybill, product_struct *second_waybill, int waybill_len) {
-    if ((!waybill) || (!first_waybill) || (!second_waybill)) {
+waybill_errors manage_price(product_struct *waybill, int waybill_len) {
+    if (!waybill) {
         return INPUT_ERROR;
     }
+
+    product_struct *first_waybill = NULL;
+    product_struct *second_waybill = NULL;
+
     quick_sort_weight(waybill, 0, waybill_len - 1);
     float sum = 0;
     for (int i = 0; i != waybill_len; i++) {
