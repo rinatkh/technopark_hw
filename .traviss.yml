@@ -41,7 +41,6 @@ jobs:
     - stage: static_analysis
       name: "Static analysis"
       script:
-        - cd ..
         - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive /*
 
     - stage: linters
