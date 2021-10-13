@@ -30,7 +30,7 @@ jobs:
       script:
         - cd src/test
         - ./test
-        - cd CMakeFiles/test.dir
+        - cd CMakeFiles/test.dir/tests
         - gcov test.cpp.gcno
         - lcov --capture --directory ../../ --output-file tests.info
         - genhtml -o ../../../../coverage-report tests.info
