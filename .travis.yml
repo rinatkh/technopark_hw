@@ -1,16 +1,20 @@
 language: c
 
+install:
+  - pip install cpplint
+
 addons:
   apt:
     packages:
       - cmake
       - valgrind
       - lcov
+      - cppcheck
 
 before_script:
   - mkdir cmake-build-debug
   - cd cmake-build-debug
-  - cmake ..
+  - cmake ../
   - make
 
 jobs:
