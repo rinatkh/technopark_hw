@@ -2,6 +2,8 @@ language: c
 
 install:
   - pip install cpplint
+  - git submodule init
+  - git submodule update --пше remote
 
 addons:
   apt:
