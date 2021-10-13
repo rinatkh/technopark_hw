@@ -25,17 +25,6 @@ jobs:
         - cd src/test
         - ./test
 
-    - stage: coverage
-      name: "Test coverage"
-      script:
-        - cd src/test
-        - ./test
-        - cd CMakeFiles/test.dir/tests
-        - gcov test.cpp.gcno
-        - lcov --capture --directory ../../ --output-file tests.info
-        - genhtml -o ../../../../coverage-report tests.info
-        - cd ../../../../
-
     - stage: memcheck
       name: "Memory check"
       script:
