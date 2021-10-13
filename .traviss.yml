@@ -41,10 +41,11 @@ jobs:
     - stage: static_analysis
       name: "Static analysis"
       script:
-        - ./cppcheck/cppcheck --enable=all --error-exitcode=1 --inconclusive /*
+        - cd ..
+        - cppcheck --enable=all --error-exitcode=1 --inconclusive src/*
 
     - stage: linters
       name: "Linters"
       script:
-        - python2.7 ../cpplint/cpplint.py --extensions=c /*
-        - python2.7 ../cpplint/cpplint.py --extensions=c++ /*
+        - cpplint --extensions=c /*
+        - cpplint --extensions=c++ /*

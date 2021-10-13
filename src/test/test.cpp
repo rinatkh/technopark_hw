@@ -11,13 +11,14 @@ TEST(SORT_TEST_WEIGTH, sorting_ten_numbers) {
     int number = 10;
     auto *arr_to_sort = (product_struct *) (malloc(number * sizeof(product_struct)));
     EXPECT_NE(arr_to_sort, nullptr);
-    for (int i = number - 1; i != -1; i--) {
-        arr_to_sort[i].weight = i;
+    for (int i = 0; i != 10; i++) {
+        arr_to_sort[i].amount_weight = (float) i;
     }
     quick_sort_weight(arr_to_sort, 0, 9);
-
-    for (int i = 0; i != number; i++) {
-        EXPECT_EQ(arr_to_sort[i].weight, i);
+    int count = 0;
+    for (int i = 9; i != -1; i--) {
+        EXPECT_EQ(arr_to_sort[count].amount_weight, i);
+        count++;
     }
     free(arr_to_sort);
 }
@@ -26,13 +27,14 @@ TEST(SORT_TEST_PRICE, sorting_twenty_numbers) {
     int number = 20;
     auto *arr_to_sort = (product_struct *) (malloc(number * sizeof(product_struct)));
     EXPECT_NE(arr_to_sort, nullptr);
-    for (int i = number - 1; i != -1; i--) {
-        arr_to_sort[i].weight = i;
+    for (int i = 0; i != 10; i++) {
+        arr_to_sort[i].amount_price = (float) i;
     }
     quick_sort_price(arr_to_sort, 0, 9);
-
-    for (int i = 0; i != number; i++) {
-        EXPECT_EQ(arr_to_sort[i].weight, i);
+    int count = 0;
+    for (int i = 9; i != -1; i--) {
+        EXPECT_EQ(arr_to_sort[count].amount_price, i);
+        count++;
     }
     free(arr_to_sort);
 }

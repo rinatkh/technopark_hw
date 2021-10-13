@@ -1,9 +1,12 @@
+#include <stddef.h>
+
 #include "quick_sort_wb.h"
 #include "product_struct.h"
 
 //нет теплейтов, поэтому копипаст
+
 void quick_sort_weight(product_struct *arr, int first, int last) {
-    if ((first < last) && (!arr)) {
+    if ((first < last) && (arr != NULL)) {
         int left = first, right = last;
         float middle = arr[(left + right) / 2].amount_weight;
         do {
@@ -24,7 +27,7 @@ void quick_sort_weight(product_struct *arr, int first, int last) {
 
 
 void quick_sort_price(product_struct *arr, int first, int last) {
-    if ((first < last) && (!arr)) {
+    if ((first < last) && (arr != NULL)) {
         int left = first, right = last;
         float middle = arr[(left + right) / 2].amount_price;
         do {
