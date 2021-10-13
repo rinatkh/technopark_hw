@@ -232,6 +232,7 @@ waybill_errors manage_weigth(product_struct *waybill, int waybill_len) {
             second_waybill = (product_struct *) (malloc(
                     (waybill_len - i - 1) * sizeof(product_struct)));
             if (!second_waybill) {
+                free(first_waybill);
                 return MEMORY_ERROR;
             }
             split_by_number_equal(waybill, first_waybill, second_waybill, i,
@@ -289,6 +290,7 @@ waybill_errors manage_price(product_struct *waybill, int waybill_len) {
             first_waybill = (product_struct *) (malloc(
                     (i + 1) * sizeof(product_struct)));
             if (!first_waybill) {
+                free(first_waybill);
                 return MEMORY_ERROR;
             }
             second_waybill = (product_struct *) (malloc(
