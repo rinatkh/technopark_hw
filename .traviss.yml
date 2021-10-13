@@ -47,5 +47,5 @@ jobs:
     - stage: linters
       name: "Linters"
       script:
-        - cpplint --extensions=c /*
-        - cpplint --extensions=c++ /*
+        - cpplint --extensions=cc src/lib/* src/prog/* src/test/*
+        - cpplint --extensions=c++ src/test/*

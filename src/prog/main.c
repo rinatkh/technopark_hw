@@ -1,3 +1,4 @@
+// "Copyright 2021 <RINAT>"
 #include <getopt.h>
 #include <malloc.h>
 
@@ -7,7 +8,8 @@
 int main(int argc, char **argv) {
 
     int count = count_reading();
-    product_struct *waylbill_list = (product_struct *) malloc(count * sizeof(product_struct));
+    product_struct *waylbill_list = (product_struct *) malloc(
+            count * sizeof(product_struct));
 
     if (!waylbill_list) {
         return -1;
