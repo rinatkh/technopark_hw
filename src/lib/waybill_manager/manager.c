@@ -45,10 +45,10 @@ static product_struct struct_reading(int number_of_position) {
             printf(" !Enter a correct product weight: \n");
             while (getchar() != '\n');
         };
+        product.amount_price = (float) (product.amount) * product.price;
+        product.amount_weight = (float) (product.amount) * product.weight;
+        return product;
     }
-    product.amount_price = (float) (product.amount) * product.price;
-    product.amount_weight = (float) (product.amount) * product.weight;
-    return product;
 }
 
 waybill_errors
