@@ -11,23 +11,31 @@ int main(int argc, char **argv) {
     product_struct *waylbill_list = (product_struct *) malloc(
             count * sizeof(product_struct));
 
-    if (!waylbill_list) {
+    if (waylbill_list == NULL) {
+        printf("INPUT FOR READING ERROR");
         return -1;
     }
-
-    structs_reading(waylbill_list, count);
+    if (structs_reading(waylbill_list, count) == INPUT_ERROR) {
+        return -1;
+    }
 
     int i;
     while ((i = getopt(argc, argv, "pw")) != -1) {
         switch (i) {
             case 'p':
-                manage_price(waylbill_list, count);
-                free(waylbill_list);
+
+                manage(waylbill_list, count, FLAG_PRICE);
+                if (waylbill_list) {
+                    free(waylbill_list);
+                }
                 break;
 
             case 'w':
-                manage_weigth(waylbill_list, count);
-                free(waylbill_list);
+
+                manage(waylbill_list, count, FLAG_WEIGTH);
+                if (waylbill_list) {
+                    free(waylbill_list);
+                }
                 break;
 
             default:

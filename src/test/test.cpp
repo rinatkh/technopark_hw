@@ -15,7 +15,7 @@ TEST(SORT_TEST_WEIGTH, sorting_ten_numbers) {
     for (int i = 0; i != 10; i++) {
         arr_to_sort[i].amount_weight = (float) i;
     }
-    quick_sort_weight(arr_to_sort, 0, 9);
+    quick_sort(arr_to_sort, 0, 9, FLAG_WEIGTH, change_position);
     int count = 0;
     for (int i = 9; i != -1; i--) {
         EXPECT_EQ(arr_to_sort[count].amount_weight, i);
@@ -32,7 +32,7 @@ TEST(SORT_TEST_PRICE, sorting_twenty_numbers) {
     for (int i = 0; i != 10; i++) {
         arr_to_sort[i].amount_price = (float) i;
     }
-    quick_sort_price(arr_to_sort, 0, 9);
+    quick_sort(arr_to_sort, 0, 9, FLAG_PRICE, change_position);
     int count = 0;
     for (int i = 9; i != -1; i--) {
         EXPECT_EQ(arr_to_sort[count].amount_price, i);
@@ -42,7 +42,7 @@ TEST(SORT_TEST_PRICE, sorting_twenty_numbers) {
 }
 
 TEST(TEST_SPLIT_STRUCT_BY_WEIGTH, spliting_three_structure) {
-    EXPECT_EQ(manage_price(nullptr, 0), INPUT_ERROR);
+    EXPECT_EQ(manage(nullptr, 0, FLAG_WEIGTH), INPUT_ERROR);
 
     int amount_of_list = 3;
     auto *waylbill_list = (product_struct *) malloc(
@@ -60,12 +60,12 @@ TEST(TEST_SPLIT_STRUCT_BY_WEIGTH, spliting_three_structure) {
     waylbill_list[1] = waylbill_second_product;
     waylbill_list[2] = waylbill_third_product;
 
-    EXPECT_EQ(manage_price(waylbill_list, amount_of_list), SUCCESS);
+    EXPECT_EQ(manage(waylbill_list, amount_of_list, FLAG_WEIGTH), SUCCESS);
     free(waylbill_list);
 }
 
 TEST(TEST_SPLIT_STRUCT_BY_WEIGTH, spliting_two_structure) {
-    EXPECT_EQ(manage_weigth(nullptr, 0), INPUT_ERROR);
+    EXPECT_EQ(manage(nullptr, 0, FLAG_PRICE), INPUT_ERROR);
 
     int amount_of_list = 3;
     auto *waylbill_list = (product_struct *) malloc(
@@ -83,7 +83,7 @@ TEST(TEST_SPLIT_STRUCT_BY_WEIGTH, spliting_two_structure) {
     waylbill_list[1] = waylbill_second_product;
     waylbill_list[2] = waylbill_third_product;
 
-    EXPECT_EQ(manage_price(waylbill_list, amount_of_list), SUCCESS);
+    EXPECT_EQ(manage(waylbill_list, amount_of_list, FLAG_PRICE), SUCCESS);
     free(waylbill_list);
 }
 
