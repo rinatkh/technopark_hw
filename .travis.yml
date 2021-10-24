@@ -12,8 +12,10 @@ addons:
       - cppcheck
 
 before_script:
-  - cmake -B cmake-build-debug
-  - make -C cmake-build-debug
+  - mkdir cmake-build-debug
+  - cd cmake-build-debug
+  - cmake ../
+  - make
 
 jobs:
   include:
