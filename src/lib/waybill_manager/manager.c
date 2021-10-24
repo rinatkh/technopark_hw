@@ -19,36 +19,33 @@ int count_reading() {
 
 static product_struct struct_reading(int number_of_position) {
     product_struct product;
-    struct pollfd revents = {STDIN_FILENO, POLLIN | POLLPRI, POLLIN | POLLPRI  };
-    if (poll(&revents, 1, 2000)) {
-        printf("\t%d product:\n", number_of_position + 1);
-        printf("Product vendor code: \n");
+    printf("\t%d product:\n", number_of_position + 1);
+    printf("Product vendor code: \n");
 
-        while ((scanf("%d", &product.vendor_code) != 1) ||
-               (product.vendor_code <= 0)) {
-            printf(" !Enter a POSITIVE INTEGER product vendor code: \n");
-            while (getchar() != '\n');
-        };
-        printf("An amount of this product: \n");
-        while ((scanf(" %d", &product.amount) != 1) || (product.amount < 0)) {
-            printf(" !Enter a POSITIVE INTEGER number of products: \n");
-            while (getchar() != '\n');
-        };
-        printf("Price of this product: \n");
-        while (scanf("%f", &product.price) != 1) {
-            printf(" !Enter a correct product price: \n");
-            while (getchar() != '\n');
-        };
+    while ((scanf("%d", &product.vendor_code) != 1) ||
+           (product.vendor_code <= 0)) {
+        printf(" !Enter a POSITIVE INTEGER product vendor code: \n");
+        while (getchar() != '\n');
+    };
+    printf("An amount of this product: \n");
+    while ((scanf(" %d", &product.amount) != 1) || (product.amount < 0)) {
+        printf(" !Enter a POSITIVE INTEGER number of products: \n");
+        while (getchar() != '\n');
+    };
+    printf("Price of this product: \n");
+    while (scanf("%f", &product.price) != 1) {
+        printf(" !Enter a correct product price: \n");
+        while (getchar() != '\n');
+    };
 
-        printf("Weight of this product: \n");
-        while (scanf("%f", &product.weight) != 1) {
-            printf(" !Enter a correct product weight: \n");
-            while (getchar() != '\n');
-        };
-        product.amount_price = (float) (product.amount) * product.price;
-        product.amount_weight = (float) (product.amount) * product.weight;
-        return product;
-    }
+    printf("Weight of this product: \n");
+    while (scanf("%f", &product.weight) != 1) {
+        printf(" !Enter a correct product weight: \n");
+        while (getchar() != '\n');
+    };
+    product.amount_price = (float) (product.amount) * product.price;
+    product.amount_weight = (float) (product.amount) * product.weight;
+    return product;
 }
 
 waybill_errors
@@ -165,13 +162,11 @@ split_by_number_not_equal(const product_struct *waybill,
 
 static float sum_(product_struct *waybill, int flag, int waybill_len) {
     float sum = 0;
-    if (flag == FLAG_WEIGTH) {
-        for (int i = 0; i != waybill_len; i++) {
+    for (int i = 0; i != waybill_len; i++) {
+        if (flag == FLAG_WEIGTH) {
             sum += waybill[i].amount_weight;
         }
-    }
-    if (flag == FLAG_PRICE) {
-        for (int i = 0; i != waybill_len; i++) {
+        else if (flag == FLAG_PRICE) {
             sum += waybill[i].amount_price;
         }
     }

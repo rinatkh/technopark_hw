@@ -1,6 +1,7 @@
 // "Copyright 2021 <RINAT>"
 #include <getopt.h>
 #include <malloc.h>
+#include <stddef.h>
 
 #include "manager.h"
 #include "product_struct.h"
