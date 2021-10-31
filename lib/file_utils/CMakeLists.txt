@@ -1,7 +1,7 @@
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 
-find_package(Thread)
+find_package(Threads)
 
 add_library(FileUtilsStatic STATIC src/file_utils_consistent.c)
 target_link_libraries(FileUtilsStatic PUBLIC errors)
