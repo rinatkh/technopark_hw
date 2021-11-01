@@ -1,8 +1,11 @@
-//
-// Created by rinat on 31.10.2021.
-//
+#pragma once
+#include "errors.h"
 
-#ifndef HOMEWORK2_FILE_UTILS_H
-#define HOMEWORK2_FILE_UTILS_H
+errors get_file_size(const char *filename, unsigned long *result);
 
-#endif //HOMEWORK2_FILE_UTILS_H
+errors count_reading(int *count_of_sequences);
+
+char **get_sequences(const int count_of_sequences);
+
+void print_sequences(char **sequences, const int count_of_sequences);
+
