@@ -66,21 +66,17 @@ char **get_sequences(const int count_of_sequences) {
     return sequences;
 }
 
-void print_sequences(const char **sequences, const int count_of_sequences) {
-    printf("\n");
-    for (int i = 0; i < count_of_sequences; i++) {
-        printf("%s\n", sequences[i]);
-    }
-}
-
-void free_memmory(char **sequences, const int count_of_sequences) {
+void free_memmory(char **sequences, const int count_of_sequences, int *amount_of_coindencess) {
     if (sequences != NULL) {
-        for (int i = 0; i <= count_of_sequences; i++) {
+        for (int i = 0; i < count_of_sequences; i++) {
             if (sequences[i] != NULL) {
                 free(sequences[i]);
             }
         }
         free(sequences);
+    }
+    if (amount_of_coindencess != NULL) {
+        free(amount_of_coindencess);
     }
 }
 
@@ -88,7 +84,7 @@ void print_result(const char **sequences, const int count_of_sequences,
              const int *amount_of_coindencess) {
     printf("\n");
     for (int i = 0; i < count_of_sequences; i++) {
-        printf("Последовательность %s найдена %i раз\n", sequences[i],
+        printf("Количество найденной последовательности \"%s\" : %i\n", sequences[i],
                amount_of_coindencess[i]);
     }
 }

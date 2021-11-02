@@ -31,14 +31,12 @@ int main(int argc, char *argv[]) {
 
     if (find_in_file_sequences(argv[1], file_size, (const char **) sequences,
                                count_of_sequences, amount_of_coindencess) != 0) {
-        free_memmory(sequences, count_of_sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         fprintf(stderr, "Failed find any sequences\n");
         return -1;
     }
     print_result((const char **) sequences, count_of_sequences, amount_of_coindencess);
-    free_memmory(sequences, count_of_sequences);
-    free(amount_of_coindencess);
+    free_memmory(sequences, count_of_sequences, amount_of_coindencess);
     return 0;
 }
 
