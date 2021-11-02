@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <stddef.h>
 
-#include "file_utils.h"
+#include "console_communication.h"
 #include "errors.h"
 
 errors get_file_size(const char *filename, unsigned long *result) {
@@ -23,7 +23,7 @@ errors get_file_size(const char *filename, unsigned long *result) {
 errors count_reading(int *count_of_sequences) {
     int res = 0;
     printf("\nEnter a POSITIVE INTEGER number of sequences: ");
-    while (((res = scanf("%d", count_of_sequences)) == 0) ||
+    while (((res = scanf("%i", count_of_sequences)) == 0) ||
            (*count_of_sequences < 0)) {
         scanf("%*[^\n]");
         printf("\nEnter a POSITIVE INTEGER number of sequences: ");
@@ -49,21 +49,46 @@ char **get_sequences(const int count_of_sequences) {
             free(sequences);
             return NULL;
         }
-        char buffer[10];
+        int res;
         printf("\nEnter an sequence: ");
-        if (fgets(buffer, 10, stdin)) {
-            sequences[i] = buffer;
+        while ((res = scanf("%s", sequences[i])) == 0) {
+            scanf("%*[^\n]");
+        }
+        if (res == EOF) {
+            printf("Nothing more to read - and no number found\n");
+            for (int j = 0; j <= i; j++) {
+                free(sequences[j]);
+            }
+            free(sequences);
+            return NULL;
         }
     }
     return sequences;
 }
 
-
-void print_sequences(char **sequences, const int count_of_sequences){
+void print_sequences(const char **sequences, const int count_of_sequences) {
     printf("\n");
     for (int i = 0; i < count_of_sequences; i++) {
-        printf("%s\t",sequences[i]);
+        printf("%s\n", sequences[i]);
     }
 }
 
+void free_memmory(char **sequences, const int count_of_sequences) {
+    if (sequences != NULL) {
+        for (int i = 0; i <= count_of_sequences; i++) {
+            if (sequences[i] != NULL) {
+                free(sequences[i]);
+            }
+        }
+        free(sequences);
+    }
+}
 
+void print_result(const char **sequences, const int count_of_sequences,
+             const int *amount_of_coindencess) {
+    printf("\n");
+    for (int i = 0; i < count_of_sequences; i++) {
+        printf("Последовательность %s найдена %i раз\n", sequences[i],
+               amount_of_coindencess[i]);
+    }
+}

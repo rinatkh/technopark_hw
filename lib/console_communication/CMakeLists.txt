@@ -1,0 +1,5 @@
+add_library(console_communication src/console_communication.c)
+
+target_include_directories(console_communication PUBLIC include)
+
+target_link_libraries(console_communication PUBLIC errors)

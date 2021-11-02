@@ -26,6 +26,7 @@ endif()
 add_subdirectory(lib)
 
 add_executable(prog src/main.c)
+target_link_libraries(prog console_communication)
 
 option(WITH_FILE_STATIC "Run with consistent lib" ON)
 if(WITH_FILE_STATIC)
