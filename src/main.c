@@ -26,11 +26,10 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    int *amount_of_coindencess = (int *) malloc(
-            count_of_sequences * sizeof(int));
+    int *amount_of_coindencess = (int *) malloc(count_of_sequences * sizeof(int));
 
-    if (find_in_file_sequences(argv[1], file_size, (const char **) sequences,
-                               count_of_sequences, amount_of_coindencess) != 0) {
+    if (find_in_file_sequences(argv[1], file_size, (const char **) sequences, count_of_sequences,
+                               amount_of_coindencess) != 0) {
         free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         fprintf(stderr, "Failed find any sequences\n");
         return -1;

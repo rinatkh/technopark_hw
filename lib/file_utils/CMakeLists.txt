@@ -11,4 +11,3 @@ target_link_libraries(FileUtilsDynamic PUBLIC errors
                                   PUBLIC pthread)
 target_include_directories(FileUtilsDynamic PUBLIC include)
 
-

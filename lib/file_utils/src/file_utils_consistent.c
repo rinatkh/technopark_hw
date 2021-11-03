@@ -1,11 +1,11 @@
 #include <fcntl.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "file_utils.h"
 
@@ -36,19 +36,13 @@ find_in_file_sequences(const char *filename, const unsigned long file_size,
                        int *amount_of_coindencess) {
 
     int fd = open(filename, O_RDWR);
-    char *region = mmap(NULL,
-                        file_size,
-                        PROT_READ | PROT_WRITE,
-                        MAP_PRIVATE | MAP_POPULATE,
-                        fd,
-                        0);
+    char *region = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0);
     if (region == MAP_FAILED) {
         printf("mmap failed\n");
         close(fd);
         return ERROR_MEMORY;
     }
-    find_sequences(sequences, count_of_sequences, amount_of_coindencess, region,
-                   file_size);
+    find_sequences(sequences, count_of_sequences, amount_of_coindencess, region, file_size);
     if (munmap(region, file_size) != 0) {
         printf("munmap failed\n");
         return ERROR_MEMORY;
