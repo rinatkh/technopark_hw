@@ -6,7 +6,7 @@
 #include "file_utils.h"
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
+    if (argc != 2) {
         fprintf(stderr, "Usage: <file_path>\n");
         return -1;
     }

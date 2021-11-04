@@ -29,7 +29,7 @@ add_executable(prog src/main.c)
 target_link_libraries(prog console_communication)
 
 add_subdirectory(lib)
-option(WITH_STATIC_LIB "Run with consistent lib" OFF)
+option(WITH_STATIC_LIB "Run with consistent lib" ON)
 if(WITH_STATIC_LIB)
     target_link_libraries(prog FileUtilsStatic)
 endif()

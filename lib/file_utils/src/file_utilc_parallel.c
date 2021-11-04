@@ -24,26 +24,6 @@ typedef struct {
 
 static sem_t semaphore;
 
-static int find_sequence(const char *sequence, const char *region, const unsigned long file_size) {
-    int amount_of_coindencess = 0;
-    char c = '\0';
-    unsigned long matches = 0;
-    for (unsigned long j = 0; j < file_size; j++) {
-        c = region[j];
-        if (c == sequence[matches]) {
-            matches++;
-        } else {
-            matches = 0;
-        }
-        if (matches == strlen(sequence)) {
-            amount_of_coindencess++;
-            matches = 0;
-        }
-    }
-    return amount_of_coindencess;
-}
-
-
 static void *my_thread(void *thread_input_data) {
     sem_wait(&semaphore);
     thread_data *data = (thread_data *) thread_input_data;
@@ -54,7 +34,15 @@ static void *my_thread(void *thread_input_data) {
         close(fd);
         exit(-1);
     }
-    data->amount_sequences = find_sequence(data->sequence, region, data->file_size);
+    int result = find_sequence(data->sequence, region, data->file_size);
+    if (result == -1) {
+        printf("find sequence failed\n");
+        close(fd);
+        exit(-1);
+    }
+    else {
+        data->amount_sequences = result;
+    }
     if (munmap(region, data->file_size) != 0) {
         printf("munmap failed\n");
         exit(-1);
@@ -69,7 +57,7 @@ errors find_in_file_sequences(const char *filename,
                               const char **sequences,
                               const int count_of_sequences,
                               int *amount_of_coindencess) {
-    if (filename == NULL || sequences == NULL) {
+    if (filename == NULL || sequences == NULL || amount_of_coindencess == NULL) {
         return ERROR_INPUT;
     }
     pthread_t *threads = (pthread_t *) malloc(count_of_sequences * sizeof(pthread_t));
