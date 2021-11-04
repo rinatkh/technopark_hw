@@ -80,11 +80,15 @@ void free_memmory(char **sequences, const int count_of_sequences, int *amount_of
     }
 }
 
-void print_result(const char **sequences, const int count_of_sequences,
+errors print_result(const char **sequences, const int count_of_sequences,
              const int *amount_of_coindencess) {
+    if (sequences == NULL || amount_of_coindencess == NULL) {
+        return ERROR_INPUT;
+    }
     printf("\n");
     for (int i = 0; i < count_of_sequences; i++) {
-        printf("Количество найденной последовательности \"%s\" : %i\n", sequences[i],
+        printf("Amount of finded sequence \"%s\" is %i\n", sequences[i],
                amount_of_coindencess[i]);
     }
+    return SUCCESS;
 }

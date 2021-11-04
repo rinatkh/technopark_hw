@@ -7,24 +7,34 @@
 #include <malloc.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <semaphore.h>
+#include <sys/sysinfo.h>
 
 #include "file_utils.h"
-#include "file_utils_parallel.h"
 
-sem_t semaphore;
+#define MAX_COUNT_PTHREADS get_nprocs_conf()
 
-static int find_sequences(const char *sequence, const char *region, const unsigned long file_size) {
+typedef struct {
+    const char *sequence;
+    int amount_sequences;
+    const char *filename;
+    unsigned long file_size;
+
+} thread_data;
+
+static sem_t semaphore;
+
+static int find_sequence(const char *sequence, const char *region, const unsigned long file_size) {
     int amount_of_coindencess = 0;
     char c = '\0';
     unsigned long matches = 0;
     for (unsigned long j = 0; j < file_size; j++) {
         c = region[j];
-        if (c == sequence[matches]) matches++;
-        else matches = 0;
-
+        if (c == sequence[matches]) {
+            matches++;
+        } else {
+            matches = 0;
+        }
         if (matches == strlen(sequence)) {
             amount_of_coindencess++;
             matches = 0;
@@ -33,22 +43,18 @@ static int find_sequences(const char *sequence, const char *region, const unsign
     return amount_of_coindencess;
 }
 
-static int is_bigger_than_max_count_CPU(int count_of_sequences) {
-    return (count_of_sequences > MAX_COUNT_PTHREADS ? MAX_COUNT_PTHREADS : count_of_sequences);
-}
 
-
-static void *my_thread(void *thread_D) {
+static void *my_thread(void *thread_input_data) {
     sem_wait(&semaphore);
-    thread_data *data = (thread_data *) thread_D;
+    thread_data *data = (thread_data *) thread_input_data;
     int fd = open(data->filename, O_RDWR);
-    char *region = mmap(NULL, data->file_size, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0);
+    char *region = mmap(NULL, data->file_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (region == MAP_FAILED) {
         printf("mmap failed\n");
         close(fd);
         exit(-1);
     }
-    data->amount_sequences = find_sequences(data->sequence, region, data->file_size);
+    data->amount_sequences = find_sequence(data->sequence, region, data->file_size);
     if (munmap(region, data->file_size) != 0) {
         printf("munmap failed\n");
         exit(-1);
@@ -63,37 +69,38 @@ errors find_in_file_sequences(const char *filename,
                               const char **sequences,
                               const int count_of_sequences,
                               int *amount_of_coindencess) {
-    pthread_t *threads = (pthread_t *) malloc(is_bigger_than_max_count_CPU(count_of_sequences) *
-                                              sizeof(pthread_t));
+    if (filename == NULL || sequences == NULL) {
+        return ERROR_INPUT;
+    }
+    pthread_t *threads = (pthread_t *) malloc(count_of_sequences * sizeof(pthread_t));
     if (threads == NULL) {
         return ERROR_MEMORY;
     }
 
-    thread_data *thread_D = (thread_data *) malloc(
-            is_bigger_than_max_count_CPU(count_of_sequences) * sizeof(thread_data));
-    if (thread_D == NULL) {
+    thread_data *data = (thread_data *) malloc(count_of_sequences * sizeof(thread_data));
+    if (data == NULL) {
         free(threads);
         return ERROR_MEMORY;
     }
     sem_init(&semaphore, 0, MAX_COUNT_PTHREADS);
-    for (int j = 0; j < is_bigger_than_max_count_CPU(count_of_sequences); j++) {
-        thread_D[j].sequence = sequences[j];
-        thread_D[j].amount_sequences = 0;
-        thread_D[j].filename = filename;
-        thread_D[j].file_size = file_size;
-        if (!pthread_create(&(threads[j]), NULL, my_thread, &thread_D[j])) {
+    for (int j = 0; j < count_of_sequences; j++) {
+        data[j].sequence = sequences[j];
+        data[j].amount_sequences = 0;
+        data[j].filename = filename;
+        data[j].file_size = file_size;
+        if (pthread_create(&(threads[j]), NULL, my_thread, &data[j])) {
             free(threads);
-            free(thread_D);
+            free(data);
             return ERROR_PHTREAD;
         }
     }
-    for (int j = 0; j < is_bigger_than_max_count_CPU(count_of_sequences); j++)
+    for (int j = 0; j < count_of_sequences; j++)
         pthread_join(threads[j], NULL);
-    for (int j = 0; j < is_bigger_than_max_count_CPU(count_of_sequences); j++)
-        amount_of_coindencess[j] = thread_D[j].amount_sequences;
+    for (int j = 0; j < count_of_sequences; j++)
+        amount_of_coindencess[j] = data[j].amount_sequences;
 
     free(threads);
-    free(thread_D);
+    free(data);
     return SUCCESS;
 }
 

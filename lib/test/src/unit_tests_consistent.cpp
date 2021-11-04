@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-
+#include "file_utils.h"
+#include "errors.h"
 }
 
 
