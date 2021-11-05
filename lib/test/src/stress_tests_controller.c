@@ -40,12 +40,12 @@ int main() {
     int amount_of_sequences = 3;
     int *amounts_of_coincidence_from_static = malloc((amount_of_sequences + 1) * sizeof(int));
     if (amounts_of_coincidence_from_static == NULL) {
-        return 1;
+        return -1;
     }
     int *amounts_of_coincidence_from_dynamic = malloc((amount_of_sequences + 1) * sizeof(int));
     if (amounts_of_coincidence_from_dynamic == NULL) {
         free(amounts_of_coincidence_from_static);
-        return 1;
+        return -1;
     }
 
     int time_static_lib = get_result_lib(amounts_of_coincidence_from_static, amount_of_sequences,
@@ -53,7 +53,7 @@ int main() {
     if (time_static_lib == -1) {
         free(amounts_of_coincidence_from_dynamic);
         free(amounts_of_coincidence_from_static);
-        return 2;
+        return -1;
     }
 
     int time_dynamic_lib = get_result_lib(amounts_of_coincidence_from_dynamic, amount_of_sequences,
@@ -61,14 +61,14 @@ int main() {
     if (time_dynamic_lib == -1) {
         free(amounts_of_coincidence_from_dynamic);
         free(amounts_of_coincidence_from_static);
-        return 2;
+        return -1;
     }
 
     for (int i = 0; i < amount_of_sequences; ++i) {
         if (amounts_of_coincidence_from_dynamic[i] != amounts_of_coincidence_from_static[i]) {
             free(amounts_of_coincidence_from_static);
             free(amounts_of_coincidence_from_dynamic);
-            return 3;
+            return -1;
         }
     }
 
