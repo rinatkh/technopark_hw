@@ -14,7 +14,7 @@ addons:
 
 jobs:
   include:
-    - stage: u-tests
+    - stage: UnitTests
       name: "Unit-tests"
       script:
         - cmake -B build -DCMAKE_BUILD_TYPE=$BUILD -DWITH_TESTS=ON
@@ -48,7 +48,7 @@ jobs:
         - ./stress_test_s ../../../files/100mb.txt 3 announced disapperared discreetly
         - ./stress_test_controller
 
-    - stage: memcheck
+    - stage: Memcheck
       name: "Memory check"
       script:
         - cmake -B build -DCMAKE_BUILD_TYPE=$BUILD -DWITH_TESTS=ON
@@ -61,7 +61,7 @@ jobs:
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_d ../../../files/100mb.txt 3 announced disapperared discreetly
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_controller
 
-    - stage: static_analysis
+    - stage: StaticAnalysis
       name: "Static analysis"
       script:
         - cppcheck --enable=all --error-exitcode=1 --inconclusive lib/* src/*

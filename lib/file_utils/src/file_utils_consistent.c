@@ -21,15 +21,13 @@ find_in_file_sequences(const char *filename, const unsigned long file_size,
         close(fd);
         return ERROR_FILE;
     }
-    int result = 0;
     for (int i = 0; i < count_of_sequences; i++) {
-        result = find_sequence(sequences[i], region, file_size);
+        int result = find_sequence(sequences[i], region, file_size);
         if (result == -1) {
             printf("find sequence failed\n");
             close(fd);
             return ERROR_INPUT;
-        }
-        else {
+        } else {
             amount_of_coindencess[i] = result;
         }
     }

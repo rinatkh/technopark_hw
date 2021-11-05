@@ -8,10 +8,9 @@ int find_sequence(const char *sequence, const char *region, const unsigned long 
         return -1;
     }
     int amount_of_coindencess = 0;
-    char c;
     unsigned long matches = 0;
     for (unsigned long j = 0; j < file_size; j++) {
-        c = region[j];
+        char c = region[j];
         if (c == sequence[matches]) {
             matches++;
         } else {

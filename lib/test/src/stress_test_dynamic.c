@@ -57,9 +57,10 @@ int main(int argc, char **argv) {
     }
 
     dlerror();
-    int
-    (*find_in_file_sequences)(const char *, const unsigned long, const char **, const int, int *);
-    find_in_file_sequences = (int (*)(const char *, const unsigned long, const char **, const int,
+    int (*find_in_file_sequences)(const char *, const unsigned long,
+                                  const char **, const int, int *);
+    find_in_file_sequences = (int (*)(const char *, const unsigned long,
+                                      const char **, const int,
                                       int *)) dlsym(handle, "find_in_file_sequences");
 
     if (((*find_in_file_sequences)(argv[1], file_size, (const char **) sequences,

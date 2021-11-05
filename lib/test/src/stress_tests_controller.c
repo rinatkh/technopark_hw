@@ -3,7 +3,8 @@
 #include <fcntl.h>
 #include <zconf.h>
 
-int time_control(int *amounts_of_coincidence_from_lib, int amount_of_sequences, const char *lib_run) {
+int
+time_control(int *amounts_of_coincidence_from_lib, int amount_of_sequences, const char *lib_run) {
     if (system(lib_run)) {
         return -1;
     }
@@ -13,7 +14,8 @@ int time_control(int *amounts_of_coincidence_from_lib, int amount_of_sequences, 
         return -1;
     }
 
-    unsigned int i = read(fd_res, amounts_of_coincidence_from_lib, (amount_of_sequences + 1) * sizeof(int));
+    unsigned int i = read(fd_res, amounts_of_coincidence_from_lib,
+                          (amount_of_sequences + 1) * sizeof(int));
     if (i != (amount_of_sequences + 1) * sizeof(int)) {
         close(fd_res);
         return -1;
@@ -23,7 +25,8 @@ int time_control(int *amounts_of_coincidence_from_lib, int amount_of_sequences, 
     return 0;
 }
 
-int get_result_lib(int *amounts_of_coincidence_from_lib, int amount_of_sequences, const char *lib_run) {
+int
+get_result_lib(int *amounts_of_coincidence_from_lib, int amount_of_sequences, const char *lib_run) {
     int lib_time = 0;
     for (int i = 0; i < 5; i++) {
         if (time_control(amounts_of_coincidence_from_lib, amount_of_sequences, lib_run)) {
@@ -37,7 +40,7 @@ int get_result_lib(int *amounts_of_coincidence_from_lib, int amount_of_sequences
 }
 
 int main() {
-    int amount_of_sequences = 3;
+    const int amount_of_sequences = 3;
     int *amounts_of_coincidence_from_static = malloc((amount_of_sequences + 1) * sizeof(int));
     if (amounts_of_coincidence_from_static == NULL) {
         return -1;

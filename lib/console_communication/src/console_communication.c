@@ -51,7 +51,7 @@ char **get_sequences(const int count_of_sequences) {
         }
         int res;
         printf("\nEnter an sequence: ");
-        while ((res = scanf("%s", sequences[i])) == 0) {
+        while (0 == (res = scanf("%10s", sequences[i]))) {
             scanf("%*[^\n]");
         }
         if (res == EOF) {
