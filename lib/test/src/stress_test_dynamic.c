@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     }
 
     void *handle;
-    handle = dlopen("libFileUtilsDynamic.so", RTLD_LAZY);
+    handle = dlopen("../file_utils/libFileUtilsDynamic.so", RTLD_LAZY);
     if (!handle) {
         fputs(dlerror(), stderr);
         return -1;
