@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Failed to open file or this file doesn't exist\n");
         return -1;
     }
+    printf("%lu", file_size);
     int count_of_sequences = 0;
     if (count_reading(&count_of_sequences) != 0) {
         fprintf(stderr, "Failed to input the value\n");
