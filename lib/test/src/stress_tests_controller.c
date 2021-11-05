@@ -49,7 +49,7 @@ int main() {
     }
 
     int time_static_lib = get_result_lib(amounts_of_coincidence_from_static, amount_of_sequences,
-                                         "../test/stress_test_s 100mb.txt 3 announced disapperared discreetly");
+                                         "../test/stress_test_s ../../../files/100mb.txt 3 announced disapperared discreetly");
     if (time_static_lib == -1) {
         free(amounts_of_coincidence_from_dynamic);
         free(amounts_of_coincidence_from_static);
@@ -57,7 +57,7 @@ int main() {
     }
 
     int time_dynamic_lib = get_result_lib(amounts_of_coincidence_from_dynamic, amount_of_sequences,
-                                          "../test/stress_test_d 100mb.txt 3 announced disapperared discreetly");
+                                          "../test/stress_test_d ../../../files/100mb.txt 3 announced disapperared discreetly");
     if (time_dynamic_lib == -1) {
         free(amounts_of_coincidence_from_dynamic);
         free(amounts_of_coincidence_from_static);

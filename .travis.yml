@@ -44,8 +44,8 @@ jobs:
         - ./u_test_dynamic
         - ./u_test_static
         - touch result.txt
-        - ./stress_test_d ../../../../files/100mb.txt 3 announced disapperared discreetly
-        - ./stress_test_s ../../../../files/100mb.txt 3 announced disapperared discreetly
+        - ./stress_test_d ../../../files/100mb.txt 3 announced disapperared discreetly
+        - ./stress_test_s ../../../files/100mb.txt 3 announced disapperared discreetly
         - ./stress_test_controller
 
     - stage: memcheck
@@ -57,8 +57,8 @@ jobs:
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./u_test_dynamic
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./u_test_static
         - touch result.txt
-        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_s ../../../../files/100mb.txt 3 announced disapperared discreetly
-        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_d ../../../../files/100mb.txt 3 announced disapperared discreetly
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_s ../../../files/100mb.txt 3 announced disapperared discreetly
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_d ../../../files/100mb.txt 3 announced disapperared discreetly
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test_controller
 
     - stage: static_analysis
