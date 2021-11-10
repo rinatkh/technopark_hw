@@ -27,13 +27,11 @@ static sem_t semaphore;
 static void *my_thread(void *thread_input_data) {
     sem_wait(&semaphore);
     thread_data *data = (thread_data *) thread_input_data;
-    int fd = open(data->filename, O_RDWR);
 
     int result = find_sequence(data->sequence, data->region, data->file_size);
     if (result == -1) {
         printf("find sequence failed\n");
-        close(fd);
-        exit(-1);
+
     } else {
         data->amount_sequences = result;
     }
@@ -48,7 +46,7 @@ errors find_in_file_sequences(const char *filename,
                               const int count_of_sequences,
                               int *amount_of_coindencess) {
     if (filename == NULL || sequences == NULL || amount_of_coindencess == NULL) {
-        return ERROR_INPUT;
+        return ERROR_NULL_ARGS;
     }
     pthread_t *threads = (pthread_t *) malloc(count_of_sequences * sizeof(pthread_t));
     if (threads == NULL) {
@@ -60,7 +58,9 @@ errors find_in_file_sequences(const char *filename,
         free(threads);
         return ERROR_MEMORY;
     }
-    sem_init(&semaphore, 0, MAX_COUNT_PTHREADS);
+    if (sem_init(&semaphore, 0, MAX_COUNT_PTHREADS) != 0) {
+        return ERROR_SEM;
+    }
 
     int fd = open(filename, O_RDWR);
     char *region = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
@@ -106,11 +106,3 @@ errors find_in_file_sequences(const char *filename,
 
     return SUCCESS;
 }
-
-
-
-
-
-
-
-

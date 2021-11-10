@@ -49,8 +49,7 @@ int main(int argc, char **argv) {
 
     int *amount_of_coindencess = (int *) malloc((count_of_sequences + 1) * sizeof(int));
     if (amount_of_coindencess == NULL) {
-        free(sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         fprintf(stderr, "Failed to allocate\n");
         dlclose(handle);
         return -1;
@@ -66,8 +65,7 @@ int main(int argc, char **argv) {
     if (((*find_in_file_sequences)(argv[1], file_size, (const char **) sequences,
                                    count_of_sequences,
                                    amount_of_coindencess)) != 0) {
-        free(sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         fprintf(stderr, "Failed find any sequences\n");
         dlclose(handle);
         return -1;
@@ -78,8 +76,7 @@ int main(int argc, char **argv) {
 
     FILE *fd_res = fopen("result.txt", "wb");
     if (!fd_res) {
-        free(sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         fprintf(stderr, "Failed find output file \"result\"\n");
         dlclose(handle);
         return -1;
@@ -87,22 +84,19 @@ int main(int argc, char **argv) {
 
     if (fwrite(amount_of_coindencess, (count_of_sequences + 1) * sizeof(int), 1, fd_res) != 1) {
         fprintf(stderr, "Failed to write struct into file\n");
-        free(sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         dlclose(handle);
         return -1;
     }
 
     if (fclose(fd_res)) {
         fprintf(stderr, "Failed to close file\n");
-        free(sequences);
-        free(amount_of_coindencess);
+        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
         dlclose(handle);
         return -1;
     }
 
-    free(sequences);
-    free(amount_of_coindencess);
+    free_memmory(sequences, count_of_sequences, amount_of_coindencess);
     dlclose(handle);
     return 0;
 }

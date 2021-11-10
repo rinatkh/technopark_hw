@@ -8,13 +8,13 @@
 errors get_file_size(const char *filename, unsigned long *result) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        fprintf(stderr, "Failed to open file\n");
-        return ERROR_INPUT;
+        return ERROR_NULL_ARGS;
     }
     fseek(file, 0, SEEK_END);
-    *result = ftell(file);
+    if ((*result = ftell(file)) == (long unsigned int) -1) {
+        return ERROR_FILE;
+    }
     if (fclose(file)) {
-        fprintf(stderr, "Failed to close file\n");
         return ERROR_FILE;
     }
     return SUCCESS;
@@ -29,8 +29,7 @@ errors count_reading(int *count_of_sequences) {
         printf("\nEnter a POSITIVE INTEGER number of sequences: ");
     }
     if (res == EOF) {
-        printf("Nothing more to read - and no number found\n");
-        return ERROR_INPUT;
+        return ERROR_NULL_ARGS;
     }
     return SUCCESS;
 }
@@ -43,10 +42,7 @@ char **get_sequences(const int count_of_sequences) {
     for (int i = 0; i < count_of_sequences; i++) {
         sequences[i] = (char *) malloc(sizeof(char) * 10);
         if (sequences[i] == NULL) {
-            for (int j = 0; j < i; j++) {
-                free(sequences[j]);
-            }
-            free(sequences);
+            free_memmory(sequences, i, NULL);
             return NULL;
         }
         int res;
@@ -55,11 +51,7 @@ char **get_sequences(const int count_of_sequences) {
             scanf("%*[^\n]");
         }
         if (res == EOF) {
-            printf("Nothing more to read - and no number found\n");
-            for (int j = 0; j <= i; j++) {
-                free(sequences[j]);
-            }
-            free(sequences);
+            free_memmory(sequences, i, NULL);
             return NULL;
         }
     }
@@ -71,19 +63,22 @@ void free_memmory(char **sequences, const int count_of_sequences, int *amount_of
         for (int i = 0; i < count_of_sequences; i++) {
             if (sequences[i] != NULL) {
                 free(sequences[i]);
+                sequences[i] = NULL;
             }
         }
         free(sequences);
+        sequences = NULL;
     }
     if (amount_of_coindencess != NULL) {
         free(amount_of_coindencess);
+        amount_of_coindencess = NULL;
     }
 }
 
 errors print_result(const char **sequences, const int count_of_sequences,
-             const int *amount_of_coindencess) {
+                    const int *amount_of_coindencess) {
     if (sequences == NULL || amount_of_coindencess == NULL) {
-        return ERROR_INPUT;
+        return ERROR_NULL_ARGS;
     }
     printf("\n");
     for (int i = 0; i < count_of_sequences; i++) {

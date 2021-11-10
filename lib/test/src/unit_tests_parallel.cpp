@@ -50,11 +50,11 @@ TEST(FileUtilsTest, find_in_file_sequences) {
     int *amount_of_coindencess = (int *) malloc(count_of_sequences * sizeof(int));
 
     ASSERT_EQ(find_in_file_sequences(nullptr, file_size, (const char **) sequences,
-                                     count_of_sequences, amount_of_coindencess), ERROR_INPUT);
+                                     count_of_sequences, amount_of_coindencess), ERROR_NULL_ARGS);
     ASSERT_EQ(find_in_file_sequences(filename, file_size, nullptr, count_of_sequences,
-                                     amount_of_coindencess), ERROR_INPUT);
+                                     amount_of_coindencess), ERROR_NULL_ARGS);
     ASSERT_EQ(find_in_file_sequences(filename, file_size, (const char **) sequences,
-                                     count_of_sequences, nullptr), ERROR_INPUT);
+                                     count_of_sequences, nullptr), ERROR_NULL_ARGS);
 
     ASSERT_EQ(find_in_file_sequences(wrong_filename, file_size, (const char **) sequences,
                                      count_of_sequences, amount_of_coindencess), ERROR_FILE);
