@@ -24,6 +24,7 @@ find_in_file_sequences(const char *filename, const unsigned long file_size,
         int result = find_sequence(sequences[i], region, file_size);
         if (result == -1) {
             close(fd);
+            munmap(region, file_size);
             return ERROR_NULL_ARGS;
         } else {
             amount_of_coindencess[i] = result;

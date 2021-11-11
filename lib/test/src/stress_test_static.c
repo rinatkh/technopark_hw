@@ -39,14 +39,15 @@ int main(int argc, char **argv) {
 
     int *amount_of_coindencess = (int *) malloc((count_of_sequences + 1) * sizeof(int));
     if (amount_of_coindencess == NULL) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
         fprintf(stderr, "Failed to allocate\n");
         return -1;
     }
 
     if (find_in_file_sequences(argv[1], file_size, (const char **) sequences, count_of_sequences,
                                amount_of_coindencess) != 0) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         fprintf(stderr, "Failed find any sequences\n");
         return -1;
     }
@@ -56,23 +57,27 @@ int main(int argc, char **argv) {
 
     FILE *fd_res = fopen("result.txt", "wb");
     if (!fd_res) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         fprintf(stderr, "Failed find output file \"result\"\n");
         return -1;
     }
 
     if (fwrite(amount_of_coindencess, (count_of_sequences + 1) * sizeof(int), 1, fd_res) != 1) {
         fprintf(stderr, "Failed to write struct into file\n");
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         return -1;
     }
 
     if (fclose(fd_res)) {
         fprintf(stderr, "Failed to close file\n");
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         return -1;
     }
 
-    free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+    free(sequences);
+    free(amount_of_coindencess);
     return 0;
 }

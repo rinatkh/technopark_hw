@@ -29,23 +29,26 @@ int main(int argc, char *argv[]) {
 
     int *amount_of_coindencess = (int *) malloc(count_of_sequences * sizeof(int));
     if (amount_of_coindencess == NULL) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
         fprintf(stderr, "Failed to allocate\n");
         return -1;
     }
 
     if (find_in_file_sequences(argv[1], file_size, (const char **) sequences, count_of_sequences,
                                amount_of_coindencess) != 0) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         fprintf(stderr, "Failed find any sequences\n");
         return -1;
     }
     if (print_result((const char **) sequences, count_of_sequences, amount_of_coindencess) != 0) {
-        free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+        free(sequences);
+        free(amount_of_coindencess);
         fprintf(stderr, "Failed print results\n");
         return -1;
     }
-    free_memmory(sequences, count_of_sequences, amount_of_coindencess);
+    free(sequences);
+    free(amount_of_coindencess);
     return 0;
 }
 
